@@ -438,7 +438,7 @@ const LibraryManagement = ({ activeSection }) => {
               <p style={{ margin: '6px 0 0', color: '#c7d2fe', fontSize: '0.88rem' }}>Real-time library catalog analytics, active issue returns, overdue fines & inventory stock health.</p>
             </div>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <button onClick={() => setShowAddBookModal(true)} style={{ padding: '10px 16px', background: '#10b981', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <button onClick={() => setShowAddForm(true)} style={{ padding: '10px 16px', background: '#10b981', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Plus size={16} /> Add Book
               </button>
             </div>
