@@ -5,6 +5,7 @@ on:
     branches: [dev]
     paths:
       - 'fix-ec2.txt'
+  workflow_dispatch:
 
 permissions:
   id-token: write
