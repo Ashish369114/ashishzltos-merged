@@ -66,4 +66,4 @@ jobs:
 
       - name: Deploy to S3
         working-directory: frontend
-        run: aws s3 sync build/ s3://${{ steps.env.outputs.S3_BUCKET }} --delete
+        run: aws s3 sync build/ s3://${{ steps.env.outputs.S3_BUCKET }} --delete --cache-control "no-cache, no-store, must-revalidate"
