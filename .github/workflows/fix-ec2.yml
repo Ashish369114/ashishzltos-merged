@@ -33,17 +33,30 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key.pem ec2-user@$EC2_HOST << 'EOF'
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            export PATH=$PATH:$NVM_DIR/versions/node/$(ls $NVM_DIR/versions/node 2>/dev/null | tail -n 1)/bin
             
-            echo "Killing all node processes..."
-            killall -9 node || true
+            echo "Killing all node processes on port 5000..."
+            sudo fuser -k 5000/tcp || true
+            pkill -9 -f node || true
             pm2 kill || true
             
             echo "Restarting backend..."
-            cd /home/ec2-user/app-dev/backend
-            pm2 start server.js --name zltsos-backend-dev
+            if [ -d "/home/ec2-user/app-dev/backend" ]; then
+              cd /home/ec2-user/app-dev/backend
+            elif [ -d "/home/ec2-user/app/backend" ]; then
+              cd /home/ec2-user/app/backend
+            fi
+
+            npm install --omit=dev
+            node create_db.js || true
+            node seeds/seedAllModules.js || true
+            
+            PORT=5000 pm2 start server.js --name zltsos-backend-dev --update-env
             pm2 save
             
-            echo "Sleeping to let it start..."
-            sleep 5
+            echo "Checking localhost:5000..."
+            sleep 3
+            curl -i http://localhost:5000/ || true
             pm2 logs zltsos-backend-dev --lines 50 --nostream
           EOF
+
