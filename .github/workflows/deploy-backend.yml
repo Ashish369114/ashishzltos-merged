@@ -75,7 +75,9 @@ jobs:
             cd $APP_DIR
 
             if [ -d ".git" ]; then
-              git pull origin ${{ github.ref_name }}
+              git fetch origin ${{ github.ref_name }} || git fetch --all
+              git checkout -f ${{ github.ref_name }} || git checkout -b ${{ github.ref_name }} origin/${{ github.ref_name }}
+              git reset --hard origin/${{ github.ref_name }}
             else
               git clone -b ${{ github.ref_name }} https://github.com/ZLTSOS/zltsos.github.io.git .
             fi
